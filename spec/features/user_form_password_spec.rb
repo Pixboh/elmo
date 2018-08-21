@@ -206,12 +206,13 @@ feature "user form password field" do
 
       context "enumerator" do
         let(:user) { create(:user, role_name: :enumerator, mission: mission) }
-        let(:actor) { user }
 
         include_examples("leaving password unchanged")
         include_examples("sending password instructions via email")
 
-        context "enumerator can see login instructions after he resets his password" do
+        context "login instructions are visible to self" do
+          let(:actor) { user }
+
           include_examples("generating new password")
           include_examples("entering new password with login instructions")
         end
@@ -221,6 +222,15 @@ feature "user form password field" do
           include_examples("leaving password unchanged")
           include_examples("generating new password")
           include_examples("entering new password")
+        end
+      end
+
+      context "staffer" do
+        let(:user) { create(:user, role_name: :staffer, mission: mission) }
+
+        context "login instructions are visible" do
+          include_examples("generating new password")
+          include_examples("entering new password with login instructions")
         end
       end
 
