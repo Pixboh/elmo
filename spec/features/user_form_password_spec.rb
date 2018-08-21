@@ -206,24 +206,21 @@ feature "user form password field" do
 
       context "enumerator" do
         let(:user) { create(:user, role_name: :enumerator, mission: mission) }
+        let(:actor) { user }
 
         include_examples("leaving password unchanged")
         include_examples("sending password instructions via email")
-        include_examples("generating new password")
-        include_examples("entering new password with login instructions")
+
+        context "enumerator can see login instructions after he resets his password" do
+          include_examples("generating new password")
+          include_examples("entering new password with login instructions")
+        end
 
         context "offline" do
           include_examples("offline")
           include_examples("leaving password unchanged")
           include_examples("generating new password")
           include_examples("entering new password")
-        end
-
-        context "enumerator can see login instructions after he resets his password" do
-          let(:actor) { user }
-
-          include_examples("generating new password")
-          include_examples("entering new password with login instructions")
         end
       end
 
